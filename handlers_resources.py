@@ -36,7 +36,7 @@ async def list_profiles(params: ListProfilesParams, ctx) -> ActionResult:
             )
             for p in raw
         ]
-        return ActionResult.ok(ProfileList(profiles=items, total=len(items)), summary=f"Retrieved {len(items)} social profiles.")
+        return ActionResult.success(ProfileList(profiles=items, total=len(items)), summary=f"Retrieved {len(items)} social profiles.")
     except Exception as e:
         return ActionResult.error(f"Error listing profiles: {e}")
 
@@ -64,7 +64,7 @@ async def list_categories(params: ListCategoriesParams, ctx) -> ActionResult:
             )
             for c in raw
         ]
-        return ActionResult.ok(CategoryList(categories=items, total=len(items)), summary=f"Retrieved {len(items)} categories.")
+        return ActionResult.success(CategoryList(categories=items, total=len(items)), summary=f"Retrieved {len(items)} categories.")
     except Exception as e:
         return ActionResult.error(f"Error listing categories: {e}")
 
@@ -93,7 +93,7 @@ async def list_posts(params: ListPostsParams, ctx) -> ActionResult:
             )
             for p in raw
         ]
-        return ActionResult.ok(PostList(posts=items, total=len(items)), summary=f"Retrieved {len(items)} posts.")
+        return ActionResult.success(PostList(posts=items, total=len(items)), summary=f"Retrieved {len(items)} posts.")
     except Exception as e:
         return ActionResult.error(f"Error listing posts: {e}")
 
@@ -121,7 +121,7 @@ async def create_post(params: CreatePostParams, ctx) -> ActionResult:
             scheduled_at=res.get("scheduled_at"),
             raw=res
         )
-        return ActionResult.ok(rec, summary=f"Created post {rec.id} in SocialBee.")
+        return ActionResult.success(rec, summary=f"Created post {rec.id} in SocialBee.")
     except Exception as e:
         return ActionResult.error(f"Error creating post: {e}")
 
@@ -140,7 +140,7 @@ async def delete_post(params: DeletePostParams, ctx) -> ActionResult:
         client = await resolve_client(ctx, params.connection_id)
         success = await client.delete_post(post_id=params.post_id)
         if success:
-            return ActionResult.ok(DeleteResult(success=True, message=f"Deleted post {params.post_id}."), summary=f"Deleted post {params.post_id}.")
+            return ActionResult.success(DeleteResult(success=True, message=f"Deleted post {params.post_id}."), summary=f"Deleted post {params.post_id}.")
         return ActionResult.error("Failed to delete post.")
     except Exception as e:
         return ActionResult.error(f"Error deleting post: {e}")
@@ -168,6 +168,6 @@ async def audit_social_health(params: AuditSocialHealthParams, ctx) -> ActionRes
             health_score=score,
             details={"profiles_active": len(profiles), "categories_active": len(categories)}
         )
-        return ActionResult.ok(rep, summary=f"SocialBee health score: {score}/100 with {len(profiles)} profiles.")
+        return ActionResult.success(rep, summary=f"SocialBee health score: {score}/100 with {len(profiles)} profiles.")
     except Exception as e:
         return ActionResult.error(f"Error auditing health: {e}")

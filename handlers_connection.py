@@ -51,7 +51,7 @@ async def connect_socialbee(params: ConnectParams, ctx) -> ActionResult:
     }
     connections.append(record)
     await ctx.store.set("connections", connections)
-    return ActionResult.ok(
+    return ActionResult.success(
         ConnectionRecord(
             id=record["id"],
             label=record["label"],
@@ -84,7 +84,7 @@ async def list_connections(params: NoParams, ctx) -> ActionResult:
         )
         for c in conns
     ]
-    return ActionResult.ok(ConnectionList(connections=records, total=len(records)), summary=f"Found {len(records)} connections.")
+    return ActionResult.success(ConnectionList(connections=records, total=len(records)), summary=f"Found {len(records)} connections.")
 
 @chat.function(
     "disconnect_socialbee",
@@ -103,4 +103,4 @@ async def disconnect_socialbee(params: ConnectionIdParams, ctx) -> ActionResult:
     target_id = params.connection_id or connections[0].get("id")
     rem = [c for c in connections if c.get("id") != target_id]
     await ctx.store.set("connections", rem)
-    return ActionResult.ok(DeleteResult(success=True, message=f"Disconnected {target_id}."), summary=f"Disconnected {target_id}.")
+    return ActionResult.success(DeleteResult(success=True, message=f"Disconnected {target_id}."), summary=f"Disconnected {target_id}.")
