@@ -73,7 +73,7 @@ async def connect_socialbee(ctx, params: ConnectParams) -> ActionResult:
 )
 async def list_connections(ctx, params: NoParams) -> ActionResult:
     """List connections."""
-    conns = await ctx.store.get("connections", [])
+    conns = (await ctx.store.get("connections", [])) or []
     records = [
         ConnectionRecord(
             id=c["id"],
