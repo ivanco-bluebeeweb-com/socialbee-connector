@@ -8,7 +8,7 @@ from schemas import NoParams, ConnectParams, ConnectionIdParams, ConnectionRecor
 from socialbee_client import SocialBeeClient
 
 async def resolve_client(ctx, connection_id: str = "") -> SocialBeeClient:
-    connections = await ctx.store.get("connections", [])
+    connections = (await ctx.store.get("connections", [])) or []
     if not connections:
         raise ValueError("No SocialBee connections configured. Use connect_socialbee first.")
     conn = None
@@ -39,7 +39,7 @@ async def connect_socialbee(ctx, params: ConnectParams) -> ActionResult:
     if res.get("status") == "error":
         return ActionResult.error(f"Failed to authenticate with SocialBee: {res.get('error')}")
 
-    connections = await ctx.store.get("connections", [])
+    connections = (await ctx.store.get("connections", [])) or []
     masked = params.api_key[:6] + "..." if len(params.api_key) > 6 else "***"
     record = {
         "id": f"conn_{uuid.uuid4().hex[:8]}",
@@ -97,7 +97,7 @@ async def list_connections(ctx, params: NoParams) -> ActionResult:
 )
 async def disconnect_socialbee(ctx, params: ConnectionIdParams) -> ActionResult:
     """Disconnect connection."""
-    connections = await ctx.store.get("connections", [])
+    connections = (await ctx.store.get("connections", [])) or []
     if not connections:
         return ActionResult.error("No active connection found.")
     target_id = params.connection_id or connections[0].get("id")
