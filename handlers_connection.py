@@ -32,7 +32,7 @@ async def resolve_client(ctx, connection_id: str = "") -> SocialBeeClient:
     effects=["create:connection"],
     data_model=ConnectionRecord
 )
-async def connect_socialbee(params: ConnectParams, ctx) -> ActionResult:
+async def connect_socialbee(ctx, params: ConnectParams) -> ActionResult:
     """Connect a SocialBee account."""
     client = SocialBeeClient(api_key=params.api_key, base_url=params.base_url)
     res = await client.verify_auth()
@@ -71,7 +71,7 @@ async def connect_socialbee(params: ConnectParams, ctx) -> ActionResult:
     effects=["read:connections"],
     data_model=ConnectionList
 )
-async def list_connections(params: NoParams, ctx) -> ActionResult:
+async def list_connections(ctx, params: NoParams) -> ActionResult:
     """List connections."""
     conns = await ctx.store.get("connections", [])
     records = [
@@ -95,7 +95,7 @@ async def list_connections(params: NoParams, ctx) -> ActionResult:
     effects=["delete:connection"],
     data_model=DeleteResult
 )
-async def disconnect_socialbee(params: ConnectionIdParams, ctx) -> ActionResult:
+async def disconnect_socialbee(ctx, params: ConnectionIdParams) -> ActionResult:
     """Disconnect connection."""
     connections = await ctx.store.get("connections", [])
     if not connections:

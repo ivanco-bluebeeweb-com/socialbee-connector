@@ -21,7 +21,7 @@ from handlers_connection import resolve_client
     effects=["read:profiles"],
     data_model=ProfileList
 )
-async def list_profiles(params: ListProfilesParams, ctx) -> ActionResult:
+async def list_profiles(ctx, params: ListProfilesParams) -> ActionResult:
     """List social profiles."""
     try:
         client = await resolve_client(ctx, params.connection_id)
@@ -49,7 +49,7 @@ async def list_profiles(params: ListProfilesParams, ctx) -> ActionResult:
     effects=["read:categories"],
     data_model=CategoryList
 )
-async def list_categories(params: ListCategoriesParams, ctx) -> ActionResult:
+async def list_categories(ctx, params: ListCategoriesParams) -> ActionResult:
     """List categories."""
     try:
         client = await resolve_client(ctx, params.connection_id)
@@ -77,7 +77,7 @@ async def list_categories(params: ListCategoriesParams, ctx) -> ActionResult:
     effects=["read:posts"],
     data_model=PostList
 )
-async def list_posts(params: ListPostsParams, ctx) -> ActionResult:
+async def list_posts(ctx, params: ListPostsParams) -> ActionResult:
     """List posts."""
     try:
         client = await resolve_client(ctx, params.connection_id)
@@ -106,7 +106,7 @@ async def list_posts(params: ListPostsParams, ctx) -> ActionResult:
     effects=["create:post"],
     data_model=PostRecord
 )
-async def create_post(params: CreatePostParams, ctx) -> ActionResult:
+async def create_post(ctx, params: CreatePostParams) -> ActionResult:
     """Create a post."""
     try:
         client = await resolve_client(ctx, params.connection_id)
@@ -134,7 +134,7 @@ async def create_post(params: CreatePostParams, ctx) -> ActionResult:
     effects=["delete:post"],
     data_model=DeleteResult
 )
-async def delete_post(params: DeletePostParams, ctx) -> ActionResult:
+async def delete_post(ctx, params: DeletePostParams) -> ActionResult:
     """Delete a post."""
     try:
         client = await resolve_client(ctx, params.connection_id)
@@ -154,7 +154,7 @@ async def delete_post(params: DeletePostParams, ctx) -> ActionResult:
     effects=["read:social_health"],
     data_model=HealthAuditReport
 )
-async def audit_social_health(params: AuditSocialHealthParams, ctx) -> ActionResult:
+async def audit_social_health(ctx, params: AuditSocialHealthParams) -> ActionResult:
     """Audit social health."""
     try:
         client = await resolve_client(ctx, params.connection_id)
